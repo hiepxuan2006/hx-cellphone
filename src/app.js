@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, "/../", "public")))
 //   await require("./connection/redisConnection").connectRedis()
 //   // app.use("/api/manager", require("./app.routes"))
 // }, 0)
-// app.use(require("./app.routes"))
+app.use(require("./app.routes"))
 app.get("/", (req, res) => {
   return res.send("hello")
 })
