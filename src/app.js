@@ -27,11 +27,11 @@ setTimeout(async () => {
   await require("./connection/db").connectDB()
   await require("./connection/redisConnection").connectRedis()
   // app.use("/api/", require("./app.routes"))
+  app.use(require("./app.routes"))
+  app.get("/", (req, res) => {
+    return res.send("hello")
+  })
+  app.listen(PORT, function () {
+    console.log("Server started on PORT " + PORT)
+  })
 }, 0)
-app.use(require("./app.routes"))
-app.get("/", (req, res) => {
-  return res.send("hello")
-})
-app.listen(PORT, function () {
-  console.log("Server started on PORT " + PORT)
-})
