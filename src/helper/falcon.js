@@ -1,8 +1,8 @@
-const Falcon = require("../constants/falcon/Falcon");
-const redisURI = process.env.MONGODB_URI;
+const Falcon = require("../constants/falcon/Falcon")
+const redisURI = process.env.REDIS_URI
 
-console.log("REDIS_URI", redisURI);
+console.log("REDIS_URI", redisURI)
 
-const falcon = Falcon();
+const falcon = Falcon()
 
-module.exports = falcon;
+module.exports = falcon
