@@ -27,7 +27,7 @@ setTimeout(async () => {
   await require("./connection/db").connectDB()
   await require("./connection/redisConnection").connectRedis()
   // app.use("/api/", require("./app.routes"))
-  // app.use(require("./app.routes"))
+  app.use(require("./app.routes"))
 }, 0)
 app.get("/", (req, res) => {
   return res.send("hello")
