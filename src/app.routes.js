@@ -7,6 +7,9 @@ require("./middlewares/passpost")
 /**
  * Account
  */
+router.get("/ping", (req, res) => {
+  res.send("pingpong")
+})
 const accountCtl = require("./controller/account")
 router.post("/register", accountCtl.registerAccount)
 router.post("/login", accountCtl.login)
