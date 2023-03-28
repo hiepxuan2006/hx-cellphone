@@ -28,11 +28,10 @@ setTimeout(async () => {
   await require("./connection/redisConnection").connectRedis()
   app.use("/api/manager", require("./app.routes"))
   app.use(require("./app.routes"))
-  app.get("/", (req, res) => {
-    return res.send("hello")
-  })
-
-  app.listen(PORT, function () {
-    console.log("Server started on PORT " + PORT)
-  })
 }, 0)
+app.get("/", (req, res) => {
+  return res.send("hello")
+})
+app.listen(PORT, function () {
+  console.log("Server started on PORT " + PORT)
+})
