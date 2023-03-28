@@ -23,16 +23,16 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(express.static(path.join(__dirname, "/../", "public")))
-setTimeout(async () => {
-  await require("./connection/db").connectDB()
-  await require("./connection/redisConnection").connectRedis()
-  app.use("/api/manager", require("./app.routes"))
-  app.use(require("./app.routes"))
-  app.get("/", (req, res) => {
-    return res.send("hello")
-  })
+// setTimeout(async () => {
+//   await require("./connection/db").connectDB()
+//   await require("./connection/redisConnection").connectRedis()
+// }, 0)
+app.use("/api/manager", require("./app.routes"))
+app.use(require("./app.routes"))
+app.get("/", (req, res) => {
+  return res.send("hello")
+})
 
-  app.listen(PORT, function () {
-    console.log("Server started on PORT " + PORT)
-  })
-}, 0)
+app.listen(PORT, function () {
+  console.log("Server started on PORT " + PORT)
+})
