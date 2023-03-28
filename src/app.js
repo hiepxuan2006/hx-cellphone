@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, "/../", "public")))
 setTimeout(async () => {
   await require("./connection/db").connectDB()
   await require("./connection/redisConnection").connectRedis()
-  app.use("/api/manager", require("./app.routes"))
+  // app.use("/api/manager", require("./app.routes"))
   app.use(require("./app.routes"))
 }, 0)
 app.get("/", (req, res) => {
