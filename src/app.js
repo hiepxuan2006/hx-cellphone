@@ -12,13 +12,6 @@ const PORT = process.env.PORT || 3000
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use(
-  session({
-    resave: false,
-    saveUninitialized: true,
-    secret: "bla bla bla",
-  })
-)
 app.use(passport.initialize())
 app.use(passport.session())
 
