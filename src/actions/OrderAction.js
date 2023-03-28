@@ -1,6 +1,6 @@
 const { getModel, getConnection } = require("../connection/database")
 const Promise = require("bluebird")
-const Order = getModel("order")
+const Order = getModel("Order")
 const OrderItem = getModel("OrderItem")
 const Product = getModel("Product")
 const ProductVariant = getModel("ProductVariant")
