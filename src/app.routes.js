@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const path = require("path")
 const Oauth = require("./middlewares/Oauth")
-const passport = require("passport")
+// const passport = require("passport")
 // require("./middlewares/passpost")
 /**
  * Account
@@ -17,11 +17,11 @@ router.post("/set-role/:accountId", accountCtl.settingRole)
 router.get("/account/get-account/", accountCtl.getAccount)
 
 router.post("/account/auth/google", accountCtl.authGoogle)
-router.get(
-  "/account/secret",
-  passport.authenticate("jwt", { session: false }),
-  accountCtl.secretAccount
-)
+// router.get(
+//   "/account/secret",
+//   passport.authenticate("jwt", { session: false }),
+//   accountCtl.secretAccount
+// )
 
 const categoryCtl = require("./controller/category")
 
