@@ -3,7 +3,7 @@ const router = express.Router()
 const path = require("path")
 const Oauth = require("./middlewares/Oauth")
 const passport = require("passport")
-require("./middlewares/passpost")
+// require("./middlewares/passpost")
 /**
  * Account
  */
