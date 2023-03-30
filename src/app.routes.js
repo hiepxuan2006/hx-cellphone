@@ -23,19 +23,6 @@ router.get(
   accountCtl.secretAccount
 )
 
-router.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "/login",
-    session: false,
-  }),
-  function (req, res) {
-    // Successful authentication, redirect home.
-    res.header("data", req.user)
-    res.redirect("http://localhost:3000")
-  }
-)
-
 const categoryCtl = require("./controller/category")
 
 router.post("/category/create-category", categoryCtl.createCategory)
