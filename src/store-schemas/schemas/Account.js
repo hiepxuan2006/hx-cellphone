@@ -13,20 +13,26 @@ module.exports = new Schema(
     password: {
       type: String,
       trim: true,
+      require: true,
     },
+
     id_google: {
       type: String,
       default: null,
     },
+
     auth_type: [
       {
         type: String,
         enum: ["local", "google"],
+        default: "local",
       },
     ],
+
     roles: {
       type: [String],
       default: ["customer"],
+      enum: ["admin", "customer", "supper_admin"],
     },
 
     is_admin: {
@@ -58,6 +64,8 @@ module.exports = new Schema(
     phone_number: {
       type: String,
       trim: true,
+      require,
+      unique: true,
     },
 
     connected: {

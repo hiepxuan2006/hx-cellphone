@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose');
 
-const Post = new Schema(
+const Topic = new Schema(
     {
         title: {
             type: String,
@@ -14,25 +14,11 @@ const Post = new Schema(
             require: true,
         },
 
-        content: {
+        label: {
             type: String,
             trim: true,
             require: true,
         },
-
-        topic_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'Post',
-            require: true,
-        },
-
-        tags: [
-            {
-                type: String,
-                trim: true,
-                require: true,
-            },
-        ],
 
         image: {
             type: String,
@@ -51,10 +37,6 @@ const Post = new Schema(
             index: true,
         },
 
-        author: {
-            type: Schema.Types.ObjectId,
-            ref: 'Account',
-        },
         created: {
             type: Date,
             required: true,
@@ -69,4 +51,4 @@ const Post = new Schema(
     { timestamps: true },
 );
 
-module.exports = Post;
+module.exports = Topic;

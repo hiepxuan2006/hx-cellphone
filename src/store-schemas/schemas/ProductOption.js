@@ -1,38 +1,42 @@
-const { Schema } = require("mongoose")
+const { Schema } = require('mongoose');
 
 const ProductOption = new Schema({
-  _id: false,
+    _id: false,
 
-  is_preselected: {
-    type: Boolean,
-    default: false,
-  },
+    is_preselected: {
+        type: Boolean,
+        default: false,
+    },
 
-  name: {
-    type: String,
-    trim: true,
-  },
+    name: {
+        type: String,
+        trim: true,
+    },
 
-  slug: {
-    type: String,
-    trim: true,
-  },
+    slug: {
+        type: String,
+        trim: true,
+    },
 
-  value: {
-    type: String,
-    trim: true,
-  },
+    value: {
+        type: String,
+        trim: true,
+    },
 
-  position: {
-    type: Number,
-    default: 0,
-  },
+    position: {
+        type: Number,
+        default: 0,
+    },
 
-  attribute: {
-    type: Schema.Types.ObjectId,
-    ref: "ProductAttribute",
-    required: true,
-  },
-})
+    quantity: {
+        type: Number,
+    },
 
-module.exports = ProductOption
+    attribute: {
+        type: Schema.Types.ObjectId,
+        ref: 'ProductAttribute',
+        required: true,
+    },
+});
+
+module.exports = ProductOption;

@@ -1,101 +1,105 @@
-const { Schema } = require("mongoose")
+const { Schema } = require('mongoose');
 
 const Order = new Schema({
-  customer_id: {
-    type: Schema.Types.ObjectId,
-    ref: "Account",
-    index: true,
-  },
-
-  discount: {
-    type: Number,
-    default: 0,
-  },
-
-  status: {
-    type: String,
-    trim: true,
-    index: true,
-    default: "processing",
-    num: ["processing , confirmed , cancelled , shipping , delivered"],
-  },
-
-  order_item: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "OrderItem",
-      index: true,
-      require: true,
+    customer_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'Account',
+        index: true,
     },
-  ],
 
-  confirmed_at: {
-    type: Date,
-    index: true,
-  },
+    discount: {
+        type: Number,
+        default: 0,
+    },
 
-  cancelled_at: {
-    type: Date,
-  },
+    status: {
+        type: String,
+        trim: true,
+        index: true,
+        default: 'processing',
+        num: ['processing , confirmed , cancelled , shipping , delivered'],
+    },
 
-  order_at: {
-    type: Date,
-  },
+    order_item: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'OrderItem',
+            index: true,
+            require: true,
+        },
+    ],
 
-  delivery_type: {
-    type: String,
-    require: true,
-  },
+    confirmed_at: {
+        type: Date,
+        index: true,
+    },
 
-  payment_type: {
-    type: String,
-    require: true,
-  },
+    cancelled_at: {
+        type: Date,
+    },
 
-  paid: {
-    type: Boolean,
-    default: false,
-  },
+    order_at: {
+        type: Date,
+    },
 
-  shipping_at: {
-    type: Date,
-  },
+    delivery_type: {
+        type: String,
+        require: true,
+    },
 
-  delivered_at: {
-    type: Date,
-  },
+    payment_type: {
+        type: String,
+        require: true,
+    },
 
-  shipping_address: {
-    type: String,
-    require: true,
-  },
+    paid: {
+        type: Boolean,
+        default: false,
+    },
 
-  order_code: {
-    type: String,
-    index: true,
-    require: true,
-  },
+    shipping_at: {
+        type: Date,
+    },
 
-  name: {
-    type: String,
-    require: true,
-    index: true,
-  },
+    delivered_at: {
+        type: Date,
+    },
 
-  phone_number: {
-    type: String,
-    require: true,
-    index: true,
-  },
-  note: {
-    type: String,
-    trim: true,
-  },
-  price_total: {
-    type: Number,
-    require: true,
-    trim: true,
-  },
-})
+    shipping_address: {
+        type: String,
+        require: true,
+    },
 
-module.exports = Order
+    order_code: {
+        type: String,
+        index: true,
+        require: true,
+    },
+
+    name: {
+        type: String,
+        require: true,
+        index: true,
+    },
+    email: {
+        type: String,
+        index: true,
+    },
+
+    phone_number: {
+        type: String,
+        require: true,
+        index: true,
+    },
+    note: {
+        type: String,
+        trim: true,
+    },
+    price_total: {
+        type: Number,
+        require: true,
+        trim: true,
+    },
+});
+
+module.exports = Order;

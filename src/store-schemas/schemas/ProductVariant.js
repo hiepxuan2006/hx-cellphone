@@ -1,61 +1,59 @@
-const mongoose = require("mongoose")
-const { Schema } = mongoose
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const ProductVariant = new Schema({
-  title: {
-    type: String,
-    trim: true,
-  },
+    title: {
+        type: String,
+        trim: true,
+    },
 
-  product: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: "Product",
-    index: true,
-  },
+    product: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'Product',
+        index: true,
+    },
 
-  image_uris: [{ type: String, trim: true }],
+    image_uris: [{ type: String, trim: true }],
 
-  is_sale: {
-    type: Boolean,
-    default: false,
-    index: true,
-  },
+    sale: {
+        type: Number,
+        default: 0,
+    },
+    quantity: {
+        type: Number,
+        required: true,
+    },
 
-  sale: {
-    type: Number,
-    default: 0,
-  },
+    options: [{}],
 
-  options: [{}],
+    retail_price: {
+        type: Number,
+        default: 0,
+    },
 
-  retail_price: {
-    type: Number,
-    default: 0,
-  },
+    sale_price: {
+        type: Number,
+        index: true,
+    },
 
-  sale_price: {
-    type: Number,
-    index: true,
-  },
+    sku: {
+        type: String,
+        trim: true,
+        index: true,
+    },
 
-  sku: {
-    type: String,
-    trim: true,
-    index: true,
-  },
+    is_default: {
+        type: Boolean,
+        required: true,
+        default: false,
+        index: true,
+    },
 
-  is_default: {
-    type: Boolean,
-    required: true,
-    default: false,
-    index: true,
-  },
+    is_active: {
+        type: Boolean,
+        default: true,
+    },
+});
 
-  is_active: {
-    type: Boolean,
-    default: true,
-  },
-})
-
-module.exports = ProductVariant
+module.exports = ProductVariant;
