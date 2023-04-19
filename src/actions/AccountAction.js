@@ -47,14 +47,14 @@ module.exports.login = async (args = {}) => {
 
     const token = await jwt.sign(
         { id: _id, email, role: roles, is_admin },
-        process.env.SECRET_KEY_TOKEN,
+        'hiepxuan19980620',
         {
             expiresIn: '1d',
         },
     );
     const refreshToken = await jwt.sign(
         { id: _id, email, role: roles },
-        process.env.SECRET_KEY_REFRESH_TOKEN,
+        'refresh-hiepxuan19980620',
     );
     const keySaveCateRefreshToken = _getKeyRefreshToken(email);
     await falcon.set({
@@ -88,7 +88,7 @@ module.exports.loginAdmin = async (args = {}) => {
 
     const token = await jwt.sign(
         { id: _id, email, role: roles, is_admin },
-        process.env.SECRET_KEY_TOKEN,
+        'hiepxuan19980620',
         {
             expiresIn: '1d',
         },
@@ -156,13 +156,9 @@ module.exports.authGoogle = async (args = {}) => {
     const { email, familyName, givenName, googleId, imgUrl, name } = args;
 
     const renderAccessToken = async (id, email, roles, is_admin) => {
-        return await jwt.sign(
-            { id, email, role: roles, is_admin },
-            process.env.SECRET_KEY_TOKEN,
-            {
-                expiresIn: '1d',
-            },
-        );
+        return await jwt.sign({ id, email, role: roles, is_admin }, 'hiepxuan19980620', {
+            expiresIn: '1d',
+        });
     };
     const isExitsAccount = await Account.findOne({
         id_google: googleId,
