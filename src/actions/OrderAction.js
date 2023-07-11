@@ -38,7 +38,6 @@ module.exports.createOrder = async (args = {}) => {
             price_total: totalPrice,
             payment_type: pay,
         });
-
         const newOrderItems = await Promise.map(
             product,
             async (item) => {
@@ -49,6 +48,7 @@ module.exports.createOrder = async (args = {}) => {
                     discount: item.variants.sale,
                     quantity: item.quantity,
                     price: item.variants.retail_price,
+                    image_uris: item.images,
                 });
                 return await newOrderItem.save();
             },
@@ -130,11 +130,11 @@ module.exports.changeStatusOrder = async (args) => {
 };
 
 module.exports.getListOrder = async (args) => {
-    const { limit, page, ...rest } = args;
-
+    const { limit, page, order_status } = args;
+    let query = {};
+    if (order_status !== 'all') query.status = order_status;
     const skip = (page - 1) * limit;
-
-    const _getOrders = Order.find(rest)
+    const _getOrders = Order.find(query)
         .limit(limit)
         .skip(skip)
         .sort({ created: -1 })
@@ -146,7 +146,7 @@ module.exports.getListOrder = async (args) => {
             },
         })
         .lean();
-    const _getTotal = Order.countDocuments(rest);
+    const _getTotal = Order.countDocuments(query);
 
     const [orders, toTal] = await Promise.all([_getOrders, _getTotal]);
 
@@ -157,4 +157,167 @@ module.exports.getListOrder = async (args) => {
         page,
         pages,
     };
+};
+
+module.exports.searchOrder = async (args = {}) => {
+    const { order_code = '' } = args;
+
+    if (!order_code) throw new Error('Missing order_code!');
+
+    const order = await Order.findOne({ order_code }).lean();
+    if (!order) throw new Error('Order not found!');
+    return order;
+};
+
+module.exports.getOrderByDate = async () => {
+    var startDate = new Date(new Date().setDate(new Date().getDate() - 7));
+    var endDate = new Date();
+
+    var dateArray = [];
+    var currentDate = new Date(endDate);
+
+    while (currentDate >= startDate) {
+        dateArray.push(currentDate.toISOString().split('T')[0]);
+        currentDate.setDate(currentDate.getDate() - 1);
+    }
+    const dailyTotal = await Order.aggregate([
+        {
+            $match: {
+                order_at: { $gte: startDate, $lte: endDate },
+            },
+        },
+        {
+            $group: {
+                _id: { $dateToString: { format: '%Y-%m-%d', date: '$order_at' } },
+                totalAmount: { $sum: '$price_total' },
+            },
+        },
+        {
+            $group: {
+                _id: null,
+                dailyTotal: {
+                    $push: {
+                        time: '$_id',
+                        totalAmount: '$totalAmount',
+                    },
+                },
+            },
+        },
+        {
+            $project: {
+                dailyTotal: {
+                    $map: {
+                        input: dateArray,
+                        as: 'time',
+                        in: {
+                            $let: {
+                                vars: {
+                                    matchingData: {
+                                        $filter: {
+                                            input: '$dailyTotal',
+                                            cond: { $eq: ['$$this.time', '$$time'] },
+                                        },
+                                    },
+                                },
+                                in: {
+                                    time: '$$time',
+                                    totalAmount: {
+                                        $cond: {
+                                            if: { $gt: [{ $size: '$$matchingData' }, 0] },
+                                            then: {
+                                                $first: '$$matchingData.totalAmount',
+                                            },
+                                            else: 0,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        {
+            $unwind: '$dailyTotal',
+        },
+        {
+            $sort: { 'dailyTotal.time': 1 },
+        },
+        {
+            $group: {
+                _id: null,
+                dailyTotal: { $push: '$dailyTotal' },
+            },
+        },
+        {
+            $project: {
+                _id: 0,
+                dailyTotal: 1,
+            },
+        },
+    ]);
+
+    const orderMonth = await Order.aggregate([
+        {
+            $group: {
+                _id: { $dateToString: { format: '%m', date: '$order_at' } },
+                totalAmount: { $sum: '$price_total' },
+                hasOrder: { $sum: 1 },
+            },
+        },
+        {
+            $group: {
+                _id: null,
+                dailyTotal: {
+                    $push: {
+                        time: { $toInt: '$_id' },
+                        totalAmount: '$totalAmount',
+                        hasOrder: '$hasOrder',
+                    },
+                },
+            },
+        },
+        {
+            $project: {
+                _id: 0,
+                dailyTotal: {
+                    $map: {
+                        input: [
+                            { time: 1 },
+                            { time: 2 },
+                            { time: 3 },
+                            { time: 4 },
+                            { time: 5 },
+                            { time: 6 },
+                            { time: 7 },
+                            { time: 8 },
+                            { time: 9 },
+                            { time: 10 },
+                            { time: 11 },
+                            { time: 12 },
+                        ],
+                        as: 'm',
+                        in: {
+                            time: '$$m.time',
+                            totalAmount: {
+                                $reduce: {
+                                    input: '$dailyTotal',
+                                    initialValue: 0,
+                                    in: {
+                                        $cond: [
+                                            { $eq: ['$$this.time', '$$m.time'] },
+                                            { $add: ['$$value', '$$this.totalAmount'] },
+                                            '$$value',
+                                        ],
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    ]);
+    const dailyTotalAnalytic = orderMonth[0].dailyTotal;
+    return dailyTotalAnalytic;
 };

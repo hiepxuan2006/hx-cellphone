@@ -79,7 +79,7 @@ module.exports.deleteProduct = (req, res) => {
 
 module.exports.searchProduct = async (req, res) => {
     try {
-        const query = req.body;
+        const query = req.query;
         const validator = Joi.object({
             title: Joi.string().trim(),
             limit: Joi.number().integer().max(100).default(10),
@@ -128,4 +128,11 @@ module.exports.getTags = async (req, res) => {
     } catch (error) {
         sendError(req, res)(error);
     }
+};
+
+module.exports.changeStatusSpecial = (req, res) => {
+    const { query } = req;
+    ProductAction.changeStatusSpecial(query)
+        .then(sendSuccess(req, res))
+        .catch(sendError(req, res));
 };

@@ -16,8 +16,15 @@ const Order = new Schema({
         type: String,
         trim: true,
         index: true,
-        default: 'processing',
-        num: ['processing , confirmed , cancelled , shipping , delivered'],
+        default: 'pending',
+        num: [
+            'pending ',
+            'confirmed ',
+            ' processing',
+            'delivery',
+            'delivered',
+            'canceled',
+        ],
     },
 
     order_item: [

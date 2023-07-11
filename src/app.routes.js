@@ -44,7 +44,6 @@ router.get('/category/get-category-parent', categoryCtl.getCategoryParent);
 
 /////product
 const productCtl = require('./controller/productController');
-// const handleImageUpload = require("./helper/upload")
 
 router.post('/product/create-product', productCtl.createProduct);
 router.get('/product/get-products', productCtl.getProducts);
@@ -54,6 +53,7 @@ router.get('/product/get-product-group', productCtl.getProductGroupCategory);
 router.post('/product/search-product', productCtl.searchProduct);
 router.post('/product/relation-product', productCtl.relationProduct);
 router.delete('/product/delete-product/:id', productCtl.deleteProduct);
+router.get('/product/change-status-special', productCtl.changeStatusSpecial);
 // /
 router.post('/product/key_word/create_key', productCtl.createKeyWord);
 router.get('/product/key_word/get_key_words', productCtl.getTags);
@@ -72,14 +72,12 @@ router.post('/order/create-order', orderCtl.createOrder);
 router.post('/order/get-order-by-code', orderCtl.getOrderByOrderCode);
 router.get('/order/check-order', orderCtl.checkOrder);
 router.get('/order/change-status', orderCtl.changeStatusOrder);
+router.get('/order/search-order', orderCtl.searchOrder);
 router.get('/order/get-orders', orderCtl.getListOrder);
+router.get('/order/analytic-order/get-order-by-date', orderCtl.getOrderByDate);
 
 // ///////post
 const postCtl = require('./controller/postController');
-const {
-    cloudinary_js_config,
-    uploadMultiToCloudinary,
-} = require('./middlewares/uploadCloud');
 
 router.post('/post/create-topic', multer.single('image'), postCtl.createNewPost);
 router.get('/post/get-all-topic', postCtl.getAllTopic);

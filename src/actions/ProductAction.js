@@ -280,6 +280,17 @@ module.exports.relationProduct = async (args = {}) => {
     );
     return true;
 };
+
+module.exports.changeStatusSpecial = async (args) => {
+    const { id, status } = args;
+    if (!id) throw new Error('Missing params');
+
+    const product = await Product.findOneAndUpdate(
+        { _id: id },
+        { $set: { special: status } },
+    ).lean();
+    return product;
+};
 // /////////////////
 const Tag = getModel('Tag');
 module.exports.createKeyWord = async (args = {}) => {

@@ -29,9 +29,8 @@ module.exports.changeStatusOrder = (req, res) => {
 module.exports.getListOrder = async (req, res) => {
     try {
         const { query } = req;
-
         const validator = Joi.object({
-            status: Joi.string().trim(),
+            order_status: Joi.string().trim(),
             limit: Joi.number().integer().max(100).default(10),
             page: Joi.number().integer().default(1),
         }).options({ stripUnknown: true });
@@ -42,4 +41,14 @@ module.exports.getListOrder = async (req, res) => {
     } catch (error) {
         sendError(req, res)(error);
     }
+};
+
+module.exports.searchOrder = (req, res) => {
+    const { query } = req;
+
+    OrderAction.searchOrder(query).then(sendSuccess(req, res)).catch(sendError(req, res));
+};
+
+module.exports.getOrderByDate = (req, res) => {
+    OrderAction.getOrderByDate().then(sendSuccess(req, res)).catch(sendError(req, res));
 };

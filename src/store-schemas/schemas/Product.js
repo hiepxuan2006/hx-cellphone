@@ -101,6 +101,7 @@ const Product = new Schema({
         index: true,
     },
 
+    specification: [{ type: Schema.Types.Mixed }],
     best_seller: {
         type: Boolean,
         default: false,
