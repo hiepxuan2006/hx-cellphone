@@ -103,9 +103,9 @@ module.exports.checkOrder = async (args = {}) => {
 };
 
 module.exports.changeStatusOrder = async (args) => {
-    const { id, status } = args;
+    const { _id, status } = args;
 
-    const order = await Order.findOne({ _id: id }).lean();
+    const order = await Order.findOne({ _id: _id }).lean();
 
     if (!order) throw new Error('Order not found');
     let updateData;
@@ -121,10 +121,16 @@ module.exports.changeStatusOrder = async (args) => {
     if (status === 'delivered') {
         updateData = { status, delivered_at: Date.now() };
     }
+    if (status === 'delivery') {
+        updateData = { status };
+    }
+    if (status === 'pending' || status === 'processing') {
+        updateData = { status };
+    }
 
     if (!updateData) throw new Error('Fail');
 
-    await Order.updateOne({ _id: id }, { $set: updateData }).lean();
+    await Order.updateOne({ _id: _id }, { $set: updateData }).lean();
 
     return true;
 };
@@ -170,7 +176,7 @@ module.exports.searchOrder = async (args = {}) => {
 };
 
 module.exports.getOrderByDate = async () => {
-    var startDate = new Date(new Date().setDate(new Date().getDate() - 7));
+    var startDate = new Date(new Date().setDate(new Date().getDate() - 12));
     var endDate = new Date();
 
     var dateArray = [];
@@ -318,6 +324,22 @@ module.exports.getOrderByDate = async () => {
             },
         },
     ]);
-    const dailyTotalAnalytic = orderMonth[0].dailyTotal;
-    return dailyTotalAnalytic;
+    const dailyMonth = orderMonth[0].dailyTotal;
+    const dailyDay = dailyTotal.length ? dailyTotal[0].dailyTotal : dailyTotal;
+    return { dailyMonth, dailyDay };
+};
+
+module.exports.getCountOrder = async () => {
+    const countPending = Order.countDocuments({ status: 'pending' });
+    const countConfirmed = Order.countDocuments({ status: 'confirmed' });
+    const countProcessing = Order.countDocuments({ status: 'processing' });
+    const countDelivery = Order.countDocuments({ status: 'delivery' });
+
+    const [pending, confirmed, processing, delivery] = await Promise.all([
+        countPending,
+        countConfirmed,
+        countProcessing,
+        countDelivery,
+    ]);
+    return { pending, confirmed, processing, delivery };
 };

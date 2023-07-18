@@ -67,6 +67,9 @@ const Order = new Schema({
     shipping_at: {
         type: Date,
     },
+    delivery: {
+        type: Date,
+    },
 
     delivered_at: {
         type: Date,

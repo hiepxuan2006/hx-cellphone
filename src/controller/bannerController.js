@@ -18,3 +18,18 @@ module.exports.deleteBanner = (req, res) => {
     const { id } = req.params;
     BannerActions.deleteBanner(id).then(sendSuccess(req, res)).catch(sendError(req, res));
 };
+
+module.exports.geAllBanner = async (req, res) => {
+    try {
+        const { query } = req;
+        const validator = Joi.object({
+            is_active: Joi.boolean().optional().default(true),
+            limit: Joi.number().integer().max(100).default(10),
+            page: Joi.number().integer().default(1),
+        }).options({ stripUnknown: true });
+        const paramsValidated = await validator.validateAsync(query);
+        BannerActions.getAllBanner(paramsValidated)
+            .then(sendSuccess(req, res))
+            .catch(sendError(req, res));
+    } catch (error) {}
+};

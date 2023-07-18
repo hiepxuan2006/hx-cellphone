@@ -113,11 +113,11 @@ module.exports.settingRole = async (args = {}) => {
 };
 
 const builtQuery = (args = {}) => {
-    const { title, is_active, is_deleted } = args;
+    const { search, is_active, is_deleted } = args;
     const query = {};
-    if (title) {
-        query.title = {
-            $regex: new RegExp(title, 'gi'),
+    if (search) {
+        query.email = {
+            $regex: new RegExp(search, 'gi'),
         };
     }
     if (is_deleted) {
@@ -133,8 +133,7 @@ module.exports.getAccount = async (args = {}) => {
     const { limit, page, ...rest } = args;
     const skip = (page - 1) * limit;
     const query = builtQuery(rest);
-
-    const _accounts = Account.find({ query })
+    const _accounts = Account.find(query)
         .limit(limit)
         .skip(skip)
         .sort({ _id: -1 })
@@ -216,4 +215,22 @@ module.exports.secretAccount = async (args = {}) => {
 
 module.exports.secretAccountAdmin = async () => {
     return true;
+};
+
+module.exports.createAccount = async (args) => {
+    const { name, email, phone, role } = args;
+    console.log(args);
+    if (!email || !role || !name || !phone) throw new Error('Missing params !');
+
+    const accountExits = await Account.findOne({
+        $or: [{ email: email }, { phone_number: phone }],
+    }).lean();
+
+    if (accountExits) throw new Error('Email or phone registered');
+
+    const hashPassword = await bcrypt.hashSync('123456', salt);
+    const newAccount = new Account(
+        Object.assign(args, { password: hashPassword, auth_type: 'local' }),
+    );
+    return await newAccount.save();
 };

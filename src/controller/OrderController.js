@@ -52,3 +52,7 @@ module.exports.searchOrder = (req, res) => {
 module.exports.getOrderByDate = (req, res) => {
     OrderAction.getOrderByDate().then(sendSuccess(req, res)).catch(sendError(req, res));
 };
+
+module.exports.getCountOrder = (req, res) => {
+    OrderAction.getCountOrder().then(sendSuccess(req, res)).catch(sendError(req, res));
+};

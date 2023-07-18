@@ -23,7 +23,7 @@ router.get('/account/get-account/', Oauth.authorRoleAdmin, accountCtl.getAccount
 router.post('/account/auth/google', accountCtl.authGoogle);
 router.get('/account/secret', Oauth.authorization, accountCtl.secretAccount);
 router.get('/account/admin/secret', Oauth.authorRoleAdmin, accountCtl.secretAccountAdmin);
-
+router.post('/account/create-account', Oauth.authorRoleAdmin, accountCtl.createAccount);
 ////////////category
 const categoryCtl = require('./controller/category');
 
@@ -71,10 +71,12 @@ const orderCtl = require('./controller/OrderController');
 router.post('/order/create-order', orderCtl.createOrder);
 router.post('/order/get-order-by-code', orderCtl.getOrderByOrderCode);
 router.get('/order/check-order', orderCtl.checkOrder);
-router.get('/order/change-status', orderCtl.changeStatusOrder);
+router.get('/order/change-status-order', orderCtl.changeStatusOrder);
 router.get('/order/search-order', orderCtl.searchOrder);
 router.get('/order/get-orders', orderCtl.getListOrder);
 router.get('/order/analytic-order/get-order-by-date', orderCtl.getOrderByDate);
+// //////
+router.get('/order/count-order', Oauth.authorRoleAdmin, orderCtl.getCountOrder);
 
 // ///////post
 const postCtl = require('./controller/postController');
@@ -93,7 +95,10 @@ const bannerCtrl = require('./controller/bannerController');
 router.post('/banner/create', multer.single('image'), bannerCtrl.createBanner);
 router.get('/banner/get-banner', bannerCtrl.getBanner);
 router.delete('/banner/delete-banner/:id', bannerCtrl.deleteBanner);
+router.get('/banner/get-all-banner', bannerCtrl.geAllBanner);
+
 // upload images
+
 router.post('/upload/post', uploadImage.handleImageUploadMultiPost, async (req, res) => {
     const { body } = req;
     const data = req.file;

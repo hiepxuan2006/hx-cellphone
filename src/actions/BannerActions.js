@@ -30,11 +30,29 @@ module.exports.getBanner = async (args = {}) => {
     }
     if (horizontal) query.horizontal = horizontal;
 
-    console.log(query);
     const banner = await Banner.find(query).lean();
     return banner;
 };
 
 module.exports.deleteBanner = async (id) => {
     return await Banner.delete({ _id: id });
+};
+
+module.exports.getAllBanner = async (args) => {
+    const { page, limit, is_active } = args;
+    const skip = (page - 1) * limit;
+
+    const _getBanner = Banner.find({ is_active })
+        .populate({
+            path: 'category',
+            model: 'Category',
+        })
+        .skip(skip)
+        .limit(limit)
+        .lean();
+
+    const _getCount = Banner.countDocuments({ is_active });
+    const [banners, count] = await Promise.all([_getBanner, _getCount]);
+    const pages = Math.ceil(count / limit) || 1;
+    return { data: banners, pages, limit, page };
 };

@@ -8,7 +8,6 @@ const getAccessToken = (req) => {
     const fromXHeader = (req.headers['x-access-token'] || '').trim();
 
     const fromHeader = fromXHeader || headerAuthor || header;
-
     if (fromHeader) {
         return fromHeader.replace('Bearer ', '').trim();
     }
@@ -20,11 +19,13 @@ module.exports.authorRoleAdmin = async (req, res, next) => {
     const Account = getModel('Account');
     const token = getAccessToken(req);
     console.log(token);
+
     try {
         if (!token) {
             throw new Error('No token provided.');
         } else {
             await jwt.verify(token, SECRET_KEY_DEFAULT, async (err, decoded) => {
+                console.log(err);
                 if (err) {
                     throw new Error('Something went wrong. Please sign in again.');
                 }

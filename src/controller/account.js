@@ -33,9 +33,8 @@ module.exports.getAccount = async (req, res) => {
         const data = req.query;
 
         const validator = Joi.object({
-            is_deleted: Joi.boolean().optional(),
             is_active: Joi.boolean().optional().default(true),
-            title: Joi.string().trim(),
+            search: Joi.string().trim(),
             limit: Joi.number().integer().max(100).default(10),
             page: Joi.number().integer().default(1),
         }).options({ stripUnknown: true });
@@ -67,4 +66,25 @@ module.exports.secretAccountAdmin = (req, res) => {
     AccountAction.secretAccountAdmin(user)
         .then(sendSuccess(req, res))
         .catch(sendError(req, res));
+};
+
+module.exports.createAccount = async (req, res) => {
+    try {
+        const { body } = req;
+        const validator = Joi.object({
+            name: Joi.string().trim().required(),
+            email: Joi.string().trim().required(),
+            phone: Joi.string()
+                .regex(/^[0-9]{10}$/)
+                .messages({ 'string.pattern.base': `Phone number must have 10 digits.` })
+                .required(),
+            role: Joi.string().trim().required(),
+        }).options({ stripUnknown: true });
+        const dataValidated = await validator.validateAsync(body);
+        AccountAction.createAccount(dataValidated)
+            .then(sendSuccess(req, res))
+            .catch(sendError(req, res));
+    } catch (error) {
+        sendError(req, res)(error);
+    }
 };
