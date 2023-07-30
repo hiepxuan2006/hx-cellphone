@@ -32,7 +32,7 @@ setTimeout(async () => {
     await require('./connection/redisConnection').connectRedis();
     app.use(require('./app.routes'));
     app.get('/', (req, res) => {
-        return res.send('hello');
+        return res.send('hello every body');
     });
     app.listen(PORT, function () {
         console.log('Server started on PORT ' + PORT);
