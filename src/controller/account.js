@@ -88,3 +88,10 @@ module.exports.createAccount = async (req, res) => {
         sendError(req, res)(error);
     }
 };
+
+module.exports.getDetailAccount = (req, res) => {
+    const { id } = req.query;
+    AccountAction.getDetailAccount(id)
+        .then(sendSuccess(req, res))
+        .catch(sendError(req, res));
+};

@@ -56,3 +56,10 @@ module.exports.getOrderByDate = (req, res) => {
 module.exports.getCountOrder = (req, res) => {
     OrderAction.getCountOrder().then(sendSuccess(req, res)).catch(sendError(req, res));
 };
+
+module.exports.getOrderByAccount = (req, res) => {
+    const { id } = req.query;
+    OrderAction.getOrderByAccount(id)
+        .then(sendSuccess(req, res))
+        .catch(sendError(req, res));
+};

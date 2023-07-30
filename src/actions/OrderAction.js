@@ -343,3 +343,15 @@ module.exports.getCountOrder = async () => {
     ]);
     return { pending, confirmed, processing, delivery };
 };
+
+module.exports.getOrderByAccount = async (id) => {
+    return await Order.find({ _id: id })
+        .populate({
+            path: 'order_item',
+            populate: {
+                path: 'product_variant_id',
+                model: ProductVariant,
+            },
+        })
+        .lean();
+};

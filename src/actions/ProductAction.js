@@ -11,7 +11,6 @@ const Category = getModel('Category');
 module.exports.createProduct = async (args = {}) => {
     const session = await getConnection().startSession();
     session.startTransaction();
-    console.log(JSON.stringify(args));
     try {
         const {
             name,
@@ -40,7 +39,7 @@ module.exports.createProduct = async (args = {}) => {
                 locale: 'vi',
                 trim: true,
             }),
-            sale: sale,
+            sale_price: sale,
             key_word,
             category,
             images,

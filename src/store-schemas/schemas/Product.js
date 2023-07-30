@@ -114,7 +114,7 @@ const Product = new Schema({
         require: true,
     },
 
-    sale: {
+    sale_price: {
         type: Number,
         default: 0,
         index: true,

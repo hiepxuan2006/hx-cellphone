@@ -234,3 +234,10 @@ module.exports.createAccount = async (args) => {
     );
     return await newAccount.save();
 };
+
+module.exports.getDetailAccount = async (id) => {
+    const account = await Account.findOne({ _id: id }).select('-password').lean();
+    if (!account) throw new Error('Account not found !');
+
+    return account;
+};
