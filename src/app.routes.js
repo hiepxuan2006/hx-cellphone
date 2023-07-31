@@ -16,7 +16,7 @@ router.get('/ping', (req, res) => {
 const accountCtl = require('./controller/account');
 router.post('/account/register', accountCtl.registerAccount);
 router.post('/account/login', accountCtl.login);
-router.post('/account/login', accountCtl.loginAdmin);
+router.post('/account/admin/login', accountCtl.loginAdmin);
 
 router.post('/set-role/:accountId', Oauth.authorRoleAdmin, accountCtl.settingRole);
 router.get('/account/get-account/', Oauth.authorRoleAdmin, accountCtl.getAccount);

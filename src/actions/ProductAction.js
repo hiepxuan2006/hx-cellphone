@@ -11,6 +11,7 @@ const Category = getModel('Category');
 module.exports.createProduct = async (args = {}) => {
     const session = await getConnection().startSession();
     session.startTransaction();
+
     try {
         const {
             name,
@@ -27,6 +28,7 @@ module.exports.createProduct = async (args = {}) => {
             variants = [],
             attributes = [],
             childCategory,
+            specification,
         } = args;
 
         let newProduct = new Product({
@@ -50,7 +52,9 @@ module.exports.createProduct = async (args = {}) => {
             tags,
             salient_features: salientFeatures,
             sub_category: childCategory,
+            specification,
         });
+        console.log(newProduct);
 
         const resultAttr = await Promise.map(
             attributes,

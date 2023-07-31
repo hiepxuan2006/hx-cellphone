@@ -37,7 +37,6 @@ const Product = new Schema({
     product_class: {
         type: String,
         trim: true,
-        required: true,
     },
 
     category: [
