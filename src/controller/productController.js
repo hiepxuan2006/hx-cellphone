@@ -137,3 +137,11 @@ module.exports.changeStatusSpecial = (req, res) => {
         .then(sendSuccess(req, res))
         .catch(sendError(req, res));
 };
+
+module.exports.getProductSpecial = (req, res) => {
+    const { query } = req;
+
+    ProductAction.getProductSpecial(query)
+        .then(sendSuccess(req, res))
+        .catch(sendError(req, res));
+};

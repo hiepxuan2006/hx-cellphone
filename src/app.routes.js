@@ -57,14 +57,19 @@ const productCtl = require('./controller/productController');
 //----webapp
 
 //----admin
-router.post('/product/create-product', productCtl.createProduct);
-router.post('/product/relation-product', productCtl.relationProduct);
+router.post('/product/create-product', Oauth.authorRoleAdmin, productCtl.createProduct);
+router.post(
+    '/product/relation-product',
+    Oauth.authorRoleAdmin,
+    productCtl.relationProduct,
+);
 router.get('/product/change-status-special', productCtl.changeStatusSpecial);
 router.delete('/product/delete-product/:id', productCtl.deleteProduct);
 router.post('/product/key_word/create_key', productCtl.createKeyWord);
 router.get('/product/key_word/get_key_words', productCtl.getTags);
 
 //
+router.get('/product/get-product-special', productCtl.getProductSpecial);
 router.get('/product/get-products', productCtl.getProducts);
 router.get('/product/get-products-category', productCtl.getProductsByCategory);
 router.post('/product/get-product', productCtl.getProductBySlug);

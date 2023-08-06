@@ -41,7 +41,7 @@ module.exports.createProduct = async (args = {}) => {
                 locale: 'vi',
                 trim: true,
             }),
-            sale_price: sale,
+            sale: sale || price,
             key_word,
             category,
             images,
@@ -328,4 +328,13 @@ module.exports.getTags = async (args = {}) => {
     const pages = Math.floor(total / limit);
 
     return { tags, limit, page, pages };
+};
+
+module.exports.getProductSpecial = async (args) => {
+    const { category } = args;
+
+    const products = await Product.find({ category: category, special: true })
+        .limit(12)
+        .lean();
+    return products;
 };

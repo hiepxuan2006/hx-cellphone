@@ -65,7 +65,6 @@ module.exports.getCategoryChildren = async (category_id) => {
             .map((item) => ({ ...item, children: sets(items, item._id.toString()) }));
 
     return sets(categories, category._id.toString());
-    return category;
 };
 
 module.exports.getCategoryParent = async () => {

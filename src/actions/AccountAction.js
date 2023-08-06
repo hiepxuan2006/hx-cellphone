@@ -219,7 +219,6 @@ module.exports.secretAccountAdmin = async () => {
 
 module.exports.createAccount = async (args) => {
     const { name, email, phone, role } = args;
-    console.log(args);
     if (!email || !role || !name || !phone) throw new Error('Missing params !');
 
     const accountExits = await Account.findOne({
@@ -230,8 +229,12 @@ module.exports.createAccount = async (args) => {
 
     const hashPassword = await bcrypt.hashSync('123456', salt);
     const newAccount = new Account(
-        Object.assign(args, { password: hashPassword, auth_type: 'local' }),
+        Object.assign(
+            { name, email, phone_number: phone, roles: role },
+            { password: hashPassword, auth_type: 'local' },
+        ),
     );
+    console.log(newAccount);
     return await newAccount.save();
 };
 
