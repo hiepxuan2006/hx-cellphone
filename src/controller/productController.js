@@ -16,6 +16,7 @@ module.exports.getProducts = async (req, res) => {
             is_deleted: Joi.boolean().optional(),
             is_active: Joi.boolean().optional().default(true),
             title: Joi.string().trim(),
+            category: Joi.string().trim(),
             order: Joi.string().valid('asc', 'desc').default('desc'),
             limit: Joi.number().integer().max(100).default(10),
             sort_by: Joi.string().valid('created', 'retail_price').default('created'),

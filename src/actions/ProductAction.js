@@ -110,7 +110,7 @@ module.exports.createProduct = async (args = {}) => {
 };
 
 const builtQuery = (args = {}) => {
-    const { title, is_active, is_deleted } = args;
+    const { title, is_active, is_deleted, category } = args;
     const query = {};
     if (title) {
         query.title = {
@@ -118,6 +118,9 @@ const builtQuery = (args = {}) => {
         };
     }
 
+    if (category) {
+        query.category = category;
+    }
     if (is_deleted) {
         query.is_deleted = is_deleted;
         query.is_active = false;

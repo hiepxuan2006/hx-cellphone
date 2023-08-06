@@ -23,7 +23,7 @@ router.get('/account/get-account/', Oauth.authorRoleAdmin, accountCtl.getAccount
 
 router.post('/account/auth/google', accountCtl.authGoogle);
 router.get('/account/secret', Oauth.authorization, accountCtl.secretAccount);
-router.get('/account/secret', Oauth.authorRoleAdmin, accountCtl.secretAccountAdmin);
+router.get('/account/admin/secret', Oauth.authorRoleAdmin, accountCtl.secretAccountAdmin);
 router.post('/account/create-account', Oauth.authorRoleAdmin, accountCtl.createAccount);
 router.get(
     '/account/get-detail-account',
